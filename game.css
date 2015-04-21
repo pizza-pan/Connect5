@@ -1,0 +1,57 @@
+table {
+  border-collapse: collapse;
+  border: none;
+  margin: 0px;
+  padding: 0px;
+}
+#container{
+	position: relative;
+}
+
+tr{
+  border: none;
+  margin: 0px;
+  padding: 0px;
+}
+body {
+  margin: 0px;
+  padding: 0px;
+}
+.cell {
+  text-align:center;
+  vertical-align: middle;
+  font-family: "Helvetica";
+  font-size: 30pt;
+  width: 80px;
+  height: 80px;
+  border: none;
+  margin: 0px;
+  padding: 0px;
+}
+.stone{
+  	width: 79px;
+  	height: 79px;
+	display: block;
+}
+.dark {
+  background-image: url(img/boardDark.png);
+}
+.light {
+  background-image: url(img/boardLight.png);
+}
+
+.slowlyAppear {
+  -webkit-animation: slowlyAppear 0.02s ease-in; /* Chrome, Safari, Opera */
+  animation: slowlyAppear 0.02s ease-in;
+}
+/* Chrome, Safari, Opera */
+@-webkit-keyframes slowlyAppear {
+  from {height:30px;width:30px;margin-left:20px;margin-right:19px;}
+  to {height:79px;width:79px;margin-left:0px;margin-right:0px;}
+}
+
+/* Standard syntax */
+@keyframes slowlyAppear {
+  from {height:30px;width:30px;margin-left:20px;margin-right:19px;}
+  to {height:79px;width:79px;margin-left:0px;margin-right:0px;}
+}

@@ -1,0 +1,55 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>jQuery UI Droppable and Draggable</title>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
+  <style>
+  .draggable { width: 100px; height: 100px; padding: 0.5em; background-color: yellow; float: left; margin: 10px 10px 10px 0; }
+  .droppable { width: 300px; height: 300px; padding: 0.5em; background-color: red; float: left; margin: 10px; }
+  </style>
+  <script>
+  var draggingon;
+  $(function() {
+    $( ".draggable" ).draggable({
+      drag: function( event, ui ) {
+        draggingon = String($( this )
+          .attr( "id" ));
+        $( this )
+          .find( "p" )
+            .html( draggingon + ": Glad to be dragged!");
+      }
+    });
+    $( "#droppable" ).droppable({
+      drop: function( event, ui ) {
+        $( this )
+          .find( "p" )
+            .html( draggingon + " dropped here");
+      }
+    });
+  });
+  </script>
+</head>
+<body>
+ 
+<div id="Draggble1" class="draggable">
+  <p>I'm Draggable1</p>
+</div>
+ 
+<div id="droppable" class="droppable">
+  <p>Drop Box</p>
+</div>
+
+<div id="Draggble2" class="draggable">
+  <p>I'm Draggable2</p>
+</div>
+
+<div id="Draggble3" class="draggable">
+  <p>I'm Draggable3</p>
+</div>
+ 
+ 
+</body>
+</html>

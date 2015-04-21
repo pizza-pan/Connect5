@@ -1,0 +1,129 @@
+<html>
+	<head>
+		<style>
+			table, th, td {
+   			 	text-align: center;
+   			 	font-family: Arial;
+			}
+			.bdCell{
+				border: 1px solid black;
+			} 
+			table {
+    			border-collapse: collapse;
+			}
+			th, td, tr{
+				width:25px;
+				height:25px;
+			}
+		</style>
+		<link rel="shortcut icon" type="image/png" href="jasmine/lib/jasmine-2.0.0/jasmine_favicon.png">
+<link rel="stylesheet" type="text/css" href="jasmine/lib/jasmine-2.0.0/jasmine.css">
+<script type="text/javascript" src="jasmine/lib/jasmine-2.0.0/jasmine.js"></script>
+<script type="text/javascript" src="jasmine/lib/jasmine-2.0.0/jasmine-html.js"></script>
+<script type="text/javascript" src="jasmine/lib/jasmine-2.0.0/boot.js"></script> 
+		<script type = "text/javascript" src ="gomokuLogic.js"></script>
+		<script type = "text/javascript">
+var board_global = gomokuGameCore.createNewBoard();
+var turn_global = 0;
+function printBoardHtml(bd){
+	var myTable = document.getElementById("myBoard");
+	while(myTable.rows.length > 0){
+		myTable.deleteRow(0);
+	}
+	var firstRow = myTable.insertRow(0);
+	firstRow.insertCell(0).innerHTML = "- ";
+	var  i, u;
+	for(i = 0; i < 15; i++){
+		firstRow.insertCell(i + 1).innerHTML = i.toString();
+	}
+	for(i = 0; i < 15; i++){
+		var newRow = myTable.insertRow(i + 1);
+		newRow.insertCell(0).innerHTML = i.toString();
+		for(u = 0; u < 15; u++){
+			var newCell = newRow.insertCell(u+1);
+			newCell.className = 'bdCell';
+			newCell.innerHTML=bd[i][u];
+		}
+	}
+}
+function updateBoard(){
+	printBoardHtml(board_global);
+}
+function startNewGame(){
+	board_global = gomokuGameCore.createNewBoard();
+	turn_global = 0;
+	updateBoard();
+	document.getElementById("gameMessage").innerHTML = "Enter position and click GO";
+	document.getElementById("controlPanel").style.display = "block";
+	document.getElementById("turnMessage").innerHTML = "X's turn";
+}
+
+function makeAMove(){
+	var row = parseInt(document.getElementById("rowPos").value);
+	var col = parseInt(document.getElementById("colPos").value);
+	try{
+		var myMove = gomokuGameCore.createMove(board_global, row, col, turn_global);
+		if(gomokuGameCore.isMoveOk({turnIndexBeforeMove: turn_global, stateBeforeMove: {board:board_global}, move: 
+			myMove})){
+			document.getElementById("rowPos").value = '';
+			document.getElementById("colPos").value = '';
+			if('endMatch' in myMove[0]){
+				var score = myMove[0].endMatch.endMatchScores;
+				if(score[0] > score[1]){
+					document.getElementById("gameMessage").innerHTML = "Game Over, X Wins!";
+				}
+				else if(score[0] < score[1]){
+					document.getElementById("gameMessage").innerHTML = "Game Over, O Wins!";
+				}
+				else{
+					document.getElementById("gameMessage").innerHTML = "Game Over, Ties!";
+
+				}
+				document.getElementById("controlPanel").style.display = "none";
+				board_global = myMove[1].set.value;
+				updateBoard();
+				return;
+			}
+			else if('setTurn' in myMove[0])
+			{
+				turn_global = myMove[0].setTurn.turnIndex;
+				document.getElementById("gameMessage").innerHTML = "Enter position and click GO";
+				if (turn_global > 0){
+					document.getElementById("turnMessage").innerHTML = "O's turn";
+				}
+				else{
+					document.getElementById("turnMessage").innerHTML = "X's turn";
+				}
+				board_global = myMove[1].set.value;
+				updateBoard();
+			}
+			else{
+				document.getElementById("gameMessage").innerHTML = "Errors in the game";
+			}
+		}
+		else{
+			document.getElementById("gameMessage").innerHTML = "Invalid Move!!";
+			return;
+		}
+	}
+	catch(e){
+		document.getElementById("gameMessage").innerHTML = "Invalid Input, please enter a valid number";
+		return;
+	}
+
+}
+		</script>
+	</head>
+	<body>
+		GOMOKUUUUUUUU......
+		<button onclick="startNewGame()">Start New Game</button>
+		<table id ="myBoard"></table>
+		<p id="gameMessage" style="color:red;">Click Start New Game</p>
+		<div id = "controlPanel" style="display:none">
+			<p id="turnMessage" style="font-size:25;">X's turn</p>
+			Row: <input id="rowPos"></input>
+			Colomn: <input id="colPos"></input>
+			<button id="goButton" onclick="makeAMove()">GO</button>
+		</div>
+	</body>
+</html>

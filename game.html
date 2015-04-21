@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Gomoku</title>
+  <meta name="description" content="Gomoku game">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.21/angular.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.21/angular-touch.min.js"></script>
+  <script src="game.js"></script>
+  <script src="gameLogic.js"></script>
+  <script src="aiService.js"></script>
+  <script src="http://yoav-zibin.github.io/emulator/scaleBodyService.js"></script>
+  <script src="http://yoav-zibin.github.io/emulator/gameService.js"></script>
+  <script src="http://yoav-zibin.github.io/emulator/messageService.js"></script>
+  <script src="http://yoav-zibin.github.io/emulator/stateService.js"></script>
+  <script>
+  </script>
+  <link rel="stylesheet" type="text/css" href="game.css">
+</head>
+<body ng-controller="Ctrl">
+	<div id="container">
+  <table>
+    <tr ng-repeat="row in board track by $index">
+      <td ng-repeat="cell in row track by $index"
+        ng-class="{cell: true, dark: (($index % 2 === 0 && $parent.$index % 2 ===0) || ($index % 2 !== 0 && $parent.$index % 2 !==0)), light: (($index % 2 !== 0 && $parent.$index % 2 ===0) || ($index % 2 === 0 && $parent.$index % 2 !==0))}"
+        ng-click="cellClicked($parent.$index, $index)">
+        <img ng-class="{stone:true,slowlyAppear: shouldSlowlyAppear($parent.$index, $index)}" ng-src ="{{placeDot(cell, $parent.$index, $index)}}"/>
+      </td>
+    </tr>
+  </table>
+  </div>
+</body>
+</html>
