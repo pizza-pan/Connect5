@@ -1,11 +1,13 @@
 'use strict';
 
+window.touchElementId = "score-sheets";
+
 angular.module('myApp', ['ngTouch'])
   .controller('Ctrl', function (
        $window, $scope, $log, $timeout,
-      aiService, gameService, scaleBodyService, gameLogic) {
-       var moveAudio = new Audio('audio/move.wav');
-    moveAudio.load();
+      aiService, gameService, gameLogic, resizeGameAreaService) {
+
+    resizeGameAreaService.setWidthToHeight(350/546);
     function updateUI(params) {
       $scope.board = params.stateAfterMove.board;
       $scope.delta = params.stateAfterMove.delta;
@@ -33,7 +35,6 @@ angular.module('myApp', ['ngTouch'])
       } else {
         // Only play a sound if there was a move (i.e., state is not empty).
         $log.info(["sound played on Board:", $scope.board]);
-        moveAudio.play();
       }
     	$scope.isYourTurn = params.turnIndexAfterMove >= 0 && // game is ongoing
         params.yourPlayerIndex === params.turnIndexAfterMove; // it's my turn
@@ -142,7 +143,7 @@ angular.module('myApp', ['ngTouch'])
     $scope.onStartCallback = function () {
         $log.info("onStart happened!", arguments);
       };
-	scaleBodyService.scaleBody({width: 1200, height: 1200});
+
     gameService.setGame({
       gameDeveloperEmail: "punk0706@gmail.com",
       minNumberOfPlayers: 2,
